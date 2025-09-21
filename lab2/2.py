@@ -8,6 +8,7 @@ def tribonacci(n):
         # Рекурсивный случай: сумма трех предыдущих чисел
         return tribonacci(n-1) + tribonacci(n-2) + tribonacci(n-3)
 
+
 print(tribonacci(0))  # 0
 print(tribonacci(1))  # 0
 print(tribonacci(2))  # 1

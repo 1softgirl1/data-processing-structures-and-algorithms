@@ -100,5 +100,4 @@ plt.title('Обратный порядок')
 plt.xlabel('Размер')
 plt.ylabel('Время (сек)')
 plt.legend()
-
 plt.show()

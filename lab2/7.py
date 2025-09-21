@@ -56,6 +56,5 @@ def main():
     t.hideturtle()
     screen.exitonclick()
 
-
 if __name__ == "__main__":
     main()

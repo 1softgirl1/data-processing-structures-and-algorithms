@@ -57,6 +57,7 @@ matrix = [
     [3, 0, 0, 4]
 ]
 
+
 if solve_sudoku(matrix):
     for row in matrix:
         print(''.join(map(str, row)))
