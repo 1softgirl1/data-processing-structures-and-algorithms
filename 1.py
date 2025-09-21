@@ -18,9 +18,9 @@ def foo(n):
     return res
 
 n = [10, 100, 1000, 10000, 25000, 50000]
-arr = []
+res = []
 for i in n:
-    arr.append(timeit.timeit(lambda: foo(i), number=1))
-plt.plot(n, arr)
+    res.append(timeit.timeit(lambda: foo(i), number=1))
+plt.plot(n, res)
 plt.show()
 
