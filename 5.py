@@ -1,27 +1,98 @@
-import timeit
-import matplotlib.pyplot as plt
-import random
+class Stack:
+    def __init__(self):
+        self.items = []
 
-def test_list_membership(n, element_to_find):
-    lst = list(range(n))
-    return element_to_find in lst
+    def isEmpty(self):
+        return self.items == []
 
-def test_set_membership(n, element_to_find):
-    s = set(range(n))
-    return element_to_find in s
+    def push(self, item):
+        self.items.append(item)
 
+    def pop(self):
+        return self.items.pop()
 
-sizes = [5, 10, 50, 100, 500, 1000, 10000, 100000]
+    def peek(self):
+        return self.items[-1]
 
-list_times = []
-set_times = []
-element_to_find = random.randint(0, 10000)
-
-for size in sizes:
-    list_times.append(timeit.timeit(lambda:test_list_membership(size, element_to_find), number=1))
-    set_times.append(timeit.timeit(lambda:test_set_membership(size, element_to_find), number=1))
+    def size(self):
+        return len(self.items)
 
 
-plt.plot(sizes, list_times, color = 'blue')
-plt.plot(sizes, set_times, color = 'red')
-plt.show()
+class BinaryTree:
+    def __init__(self, rootObj):
+        self.key = rootObj
+        self.leftChild = None
+        self.rightChild = None
+
+    def insertLeft(self, newNode):
+        if self.leftChild == None:
+            self.leftChild = BinaryTree(newNode)
+        else:
+            t = BinaryTree(newNode)
+            t.leftChild = self.leftChild
+            self.leftChild = t
+
+    def insertRight(self, newNode):
+        if self.rightChild == None:
+            self.rightChild = BinaryTree(newNode)
+        else:
+            t = BinaryTree(newNode)
+            t.rightChild = self.rightChild
+            self.rightChild = t
+
+    def getRightChild(self):
+        return self.rightChild
+
+    def getLeftChild(self):
+        return self.leftChild
+
+    def setRootVal(self, obj):
+        self.key = obj
+
+    def getRootVal(self):
+        return self.key
+
+
+def buildParseTree(fpexp):
+    fplist = fpexp.split()
+    pStack = Stack()
+    eTree = BinaryTree('')
+    pStack.push(eTree)
+    currentTree = eTree
+    for i in fplist:
+        if i == '(':
+            currentTree.insertLeft('')
+            pStack.push(currentTree)
+            currentTree = currentTree.getLeftChild()
+        elif i not in ['+', '-', '*', '/', ')']:
+            currentTree.setRootVal(int(i))
+            parent = pStack.pop()
+            currentTree = parent
+        elif i in ['+', '-', '*', '/']:
+            currentTree.setRootVal(i)
+            currentTree.insertRight('')
+            pStack.push(currentTree)
+            currentTree = currentTree.getRightChild()
+        elif i == ')':
+            currentTree = pStack.pop()
+        else:
+            raise ValueError
+    return eTree
+
+
+def evaluate(parseTree):
+    opers = {'+': lambda x, y: x + y, '-': lambda x, y: x - y,
+             '*': lambda x, y: x * y, '/': lambda x, y: x / y}
+
+    leftC = parseTree.getLeftChild()
+    rightC = parseTree.getRightChild()
+
+    if leftC and rightC:
+        fn = opers[parseTree.getRootVal()]
+        return fn(evaluate(leftC),evaluate(rightC))
+    else:
+        return parseTree.getRootVal()
+
+pt = buildParseTree("( ( 10 + 5 ) * 3 )")
+
+print(evaluate(pt))

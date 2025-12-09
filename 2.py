@@ -1,45 +1,56 @@
-import matplotlib.pyplot as plt
-import timeit
-import re
-
-# Асимптотическая сложность o(n^2)
-def palindrome1(n):
-    n = re.sub(r'\W+', '', n)
-    n = n.lower()
-    n_rev = ''
-    for char in n:
-        n_rev = char + n_rev
-    return n == n_rev
-
-# Асимптотическая сложность o(n)
-def palindrome2(n):
-    n = re.sub(r'\W+', '', n)
-    n = n.lower()
-    n_rev = ''.join(reversed(n))
-    return n == n_rev
-
-data = [
-    'Ежу хуже',
-    'Лёша на полке клопа нашёл',
-    'А роза упала на лапу Азора, но дивен и светел я иду, а к коту — ход одиссейский, и лев в Африке упал и лапу чуть не задел, а за ним и я, идол, вел себя, как тот котик, а луна канула, и Азор на лапу алупан зора и аку на канула, а кот тот как себя вел — лидо я и мина задела?.. Тучу палупу и лапу на кирку Фарку в Аве лиссе йдоско — ход уток, а я иду и летес вени дивон',
-    'Палиндро́м (от др.-греч. πάλιν — «назад, снова» и др.-греч. δρóμος — «бег, движение»), пе́ревертень[1] — число, буквосочетание, слово или текст, одинаково читающееся в обоих направлениях. Например, число 101; слова «топот» в русском языке и фин. saippuakivikauppias (продавец мыльного камня; торговец стеатитом) — самое длинное слово-палиндром в мире; текст «а роза упала на лапу Азора» и прочие являются палиндромами. Дата 22 февраля 2022 года тоже является палиндромом (22022022 по форме ДД-ММ-ГГГГ).',
-    'В палиндромичном году (2002) Петер Норвиг (англ. Peter Norvig) закончил пятилетнюю работу с применением компьютера по созданию самого длинного палиндрома на английском языке, состоящего из 17 259 слов. Написанная в традициях классического палиндрома A man, a plan, a canal. Panama («Человек, план, канал — Панама»), но в целом бессмысленная, эта фраза начинается A man, a plan, a cameo, Zena… и заканчивается …Ibanez, OEM, a canal, Panama[13]. Похожие рекорды, но в других «весовых категориях» были установлены Джеральдом Бернсом (англ. Gerald M. Berns, бессмысленный список из 31 358 слов) и Лоуренсом Левиным (англ. Lawrence Levine, связный роман Olson in Oslo из 31 594 слов, написанный с применением странных граммических структур и архаичного языка и потому трудный для чтения)[13].'
-]
-
-for text in data:
-    print(palindrome1(text))
-    print(palindrome2(text))
+def BinaryTree(r):
+    return [r, [], []]
 
 
-times1 = []
-times2 = []
-lengths = []
+def insertLeft(root, newBranch):
+    t = root.pop(1)
+    if len(t) > 1:
+        root.insert(1, [newBranch, t, []])
+    else:
+        root.insert(1, [newBranch, [], []])
+    return root
 
-for text in data:
-    lengths.append(len(text))
-    times1.append(timeit.timeit(lambda: palindrome1(text), number=1))
-    times2.append(timeit.timeit(lambda: palindrome2(text), number=1))
 
-plt.plot(lengths, times1, color='green')
-plt.plot(lengths, times2, color='blue')
-plt.show()
+def insertRight(root, newBranch):
+    t = root.pop(2)
+    if len(t) > 1:
+        root.insert(2, [newBranch, [], t])
+    else:
+        root.insert(2, [newBranch, [], []])
+    return root
+
+
+def getRootVal(root):
+    return root[0]
+
+
+def setRootVal(root, newVal):
+    root[0] = newVal
+
+
+def getLeftChild(root):
+    return root[1]
+
+
+def getRightChild(root):
+    return root[2]
+
+
+r = BinaryTree(3)
+print(r)
+insertLeft(r, 4)
+print(r)
+insertLeft(r, 5)
+print(r)
+insertRight(r, 6)
+print(r)
+insertRight(r, 7)
+print(r)
+l = getLeftChild(r)
+print(l)
+
+setRootVal(l, 9)
+print(r)
+insertLeft(l, 11)
+print(r)
+print(getRightChild(getRightChild(r)))
